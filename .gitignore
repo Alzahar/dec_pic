@@ -1,0 +1,20 @@
+#Существует 3 типа файлов для игнорирования файлов в Git
+#
+#~/.gitexcludes
+#игнорировать для пользователя, НЕ отправлять, отредактировать и выполнить команду
+#git config --global core.excludesfile
+#ИЛИ вписать в файл ~/.gitconfig    раздел [core]   строка excludesfile = ~/.gitexcludes
+#
+#.git/info/exclude
+#игнорировать в проекте, НЕ отправлять, отредактировать
+#
+#
+#.gitignore
+#игнорировать в проекте, передавать всем, отредактировать
+#*~
+#*.[ao]
+.directory
+dec_pic.all.sh.bk
+eskd_num.sh.bk
+eskd_num.txt
+t.jpg
