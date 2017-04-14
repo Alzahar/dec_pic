@@ -21,10 +21,10 @@ while getopts "u:l:o:h" opt;do
     esac
 done
 pold="$PWD"
-echo "url1=$url1"
-echo "ptch=$ptch"
-echo "pout=$pout"
-echo "pold=$pold"
+#echo "url1=$url1"
+#echo "ptch=$ptch"
+#echo "pout=$pout"
+#echo "pold=$pold"
 if [ -n "$help" ];then echo "Использование: $0 - только запуск готового списка в текущем каталоге.
 
 Варианты использования с ключами:
@@ -60,6 +60,16 @@ fi
 
 
 #__подготовка__
+#pout="/home/$USER/git/dec_pic"
+#имя формируемого ASCII файла - каталога строк 
+outf="eskd_num.txt"
+#имя сжатого gzip файла со строками 
+#outgz="$pout/$outf.gz"
+outgz="$outf.gz"
+#подкаталог с изображениями
+outpicdir="." #если в том-же подкаталоге
+outpicdir="img" #всё это только для файлов состоящих из цифр, например 7111.jpg
+
 #каталог загрузки
 #ptch="/home/$USER/tst/zayavki/ok-eskd/classinform.ru/ok-eskd"
 #рабочий каталог
@@ -69,19 +79,7 @@ if [ -d "$ptch" ];then
         cd "$pout"
     fi
     echo "Из заголовков HTML каталога $ptch формируется список строк в локальный каталог $PWD"
-    #cd "$pout"
-    #else
-    #pout="$PWD"
 
-    #pout="/home/$USER/git/dec_pic"
-    #имя формируемого ASCII файла - каталога строк 
-    outf="eskd_num.txt"
-    #имя сжатого gzip файла со строками 
-    #outgz="$pout/$outf.gz"
-    outgz="$outf.gz"
-    #подкаталог с изображениями
-    outpicdir="." #если в том-же подкаталоге
-    outpicdir="img" #всё это только для файлов состоящих из цифр, например 7111.jpg
 
     #cat $ptch/kod-0*.html|sed -n -e '/<title/p'|iconv -f WINDOWS-1251 -t UTF-8|sed 's/<title>Классификатор\ ЕСКД\ |\ //'|sed 's/\ |\ Общероссийский\ классификатор\ изделий\ и\ конструкторских\ документов<\/title>//'>$outf
     #cat $ptch/kod-1*.html|sed -n -e '/<title/p'|iconv -f WINDOWS-1251 -t UTF-8|sed 's/<title>Классификатор\ ЕСКД\ |\ //'|sed 's/\ |\ Общероссийский\ классификатор\ изделий\ и\ конструкторских\ документов<\/title>//'>>$outf
@@ -98,10 +96,6 @@ if [ -d "$ptch" ];then
     #сжатие КАТАЛОГА с изображениями
     #tar -cvzf $outpicgz $outpicdir/
 fi
-pwd
-cd "$pold"
-pwd
-exit 0
 
 
 
@@ -152,7 +146,7 @@ for N in `seq $N $M` ;do
     if `ls img/$F[0-9].* > /dev/null 2>&1`;then
         #ImageMagick собирает подходящие под введённые номера картинки в одну парами в строке (-tile 2x)
         montage $outpicdir/$F[0-9].jpg -tile 2x -geometry '300x200+2+2>' $pict
-        $browser $ptch/$htmt
+        $browser $PWD/$htmt
     fi
     echo ""
     read -p "Введите $N-ю цифру $slv3а:" -n 1 kl
@@ -167,4 +161,8 @@ echo ""
 #выборка и вывод подходящих строк, показать все поля
 zcat $outgz|sed -n -e "/^$slv3\ $F"\ /p
 #возвращение в исходный каталог
+pwd
 cd "$pold"
+pwd
+exit 0
+
